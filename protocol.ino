@@ -2,15 +2,14 @@
 
 
 //NOMBRE DE CRIDES
-#define N_CRIDES 1
+#define N_CRIDES 2
 
 
 const char* ssid = "tarla";
 const char* password = "tarla2017hack";
- 
+
 int ledPin = 13; // GPIO13
 WiFiServer server(80);
-
 
 struct parametre{
   String nom;
@@ -22,7 +21,32 @@ struct entrada{
   String (*funcio)(parametre params[]);
 };
 
-entrada entrades[N_CRIDES];
+entrada entrades[N_CRIDES]; 
+
+String encendre(parametre params[]){
+  Serial.println(sizeof(params));
+  Serial.println((sizeof(params)/sizeof(parametre)));
+  for(int i = 0; i < (sizeof(params)/sizeof(parametre)); i++){
+    Serial.print("Parametre trobat, nom: ");
+    Serial.print(params[i].nom);
+    Serial.print(" valor: ");
+    Serial.print(params[i].valor);
+  }
+  return "TOT PERFECT";
+}
+
+String ipToString(IPAddress ip){
+  String s="";
+  for (int i=0; i<4; i++)
+    s += i  ? "." + String(ip[i]) : String(ip[i]);
+  return s;
+}
+
+//is mandatory to implement this function with your device
+String status(parametre params[]){
+  String myDeviceIsA = "Light";
+  return "I'm the :" + myDeviceIsA + ", my IP is " + ipToString(WiFi.localIP());
+}
  
 void setup() {
   Serial.begin(115200);
@@ -59,12 +83,18 @@ void setup() {
   Serial.print(WiFi.localIP());
   Serial.println("/");
 
+  //don't overwrite status function, don't forget to implement it.
+  entrada e0;
+  e0.nom = "status";
+  e0.funcio = status;
+  entrades[0] = e0;
 
-
+  //customize your functions here:
   entrada e1;
   e1.nom = "on";
   e1.funcio = encendre;
-  entrades[0] = e1;
+  entrades[1] = e1;
+
 }
  
 void loop() {
@@ -127,14 +157,29 @@ void loop() {
   int index = 0;
   while(index < N_CRIDES && nomFuncio != entrades[index].nom){
     index++;
+<<<<<<< HEAD
   } 
   
   client.println("HTTP/1.1 200 OK\r\n\r\n"+entrades[index].funcio(parametres));
   //client.write(prova);
+=======
+  }
+  if (index < N_CRIDES) {
+    String resposta = entrades[index].funcio(parametres);
+  
+    client.println("HTTP/1.1 200 OK");
+    client.println("Content-Type: text/html");  
+    client.println("");  
+    client.println(resposta);    
+    
+    Serial.println(resposta);
+  }
+>>>>>>> 9f1c4fbecd27782204a9fa3ecd8c9e1eee9c30b1
   client.flush();
   client.stop();
 }
 
+<<<<<<< HEAD
 String encendre(parametre params[]){
   Serial.println(sizeof(params));
   Serial.println((sizeof(params)/sizeof(parametre)));
@@ -150,3 +195,5 @@ String encendre(parametre params[]){
 
 
 
+=======
+>>>>>>> 9f1c4fbecd27782204a9fa3ecd8c9e1eee9c30b1
