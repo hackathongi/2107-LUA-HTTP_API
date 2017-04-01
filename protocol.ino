@@ -165,5 +165,6 @@ void loop() {
     Serial.println(resposta);
   }
   client.flush();
+  client.stop();
 }
 
