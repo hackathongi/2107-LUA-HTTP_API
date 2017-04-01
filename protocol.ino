@@ -157,13 +157,8 @@ void loop() {
   int index = 0;
   while(index < N_CRIDES && nomFuncio != entrades[index].nom){
     index++;
-<<<<<<< HEAD
   } 
-  
-  client.println("HTTP/1.1 200 OK\r\n\r\n"+entrades[index].funcio(parametres));
-  //client.write(prova);
-=======
-  }
+
   if (index < N_CRIDES) {
     String resposta = entrades[index].funcio(parametres);
   
@@ -172,28 +167,10 @@ void loop() {
     client.println("");  
     client.println(resposta);    
     
-    Serial.println(resposta);
   }
->>>>>>> 9f1c4fbecd27782204a9fa3ecd8c9e1eee9c30b1
+
   client.flush();
   client.stop();
 }
 
-<<<<<<< HEAD
-String encendre(parametre params[]){
-  Serial.println(sizeof(params));
-  Serial.println((sizeof(params)/sizeof(parametre)));
-  for(int i = 0; i < (sizeof(params)/sizeof(parametre)); i++){
-    Serial.print("Parametre trobat, nom: ");
-    Serial.print(params[i].nom);
-    Serial.print(" valor: ");
-    Serial.print(params[i].valor);
-  }
-  return "TOT PERFECT";
-}
 
-
-
-
-=======
->>>>>>> 9f1c4fbecd27782204a9fa3ecd8c9e1eee9c30b1
