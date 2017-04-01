@@ -1,5 +1,6 @@
 #include <ESP8266WiFi.h>
 
+
 //NOMBRE DE CRIDES
 #define N_CRIDES 1
 
@@ -33,9 +34,12 @@ void setup() {
   // Connect to WiFi network
   Serial.println();
   Serial.println();
+  IPAddress ip(192, 168, 2, 3);
+  IPAddress gateway(192, 168, 1, 1); // set gateway to match your network
+  IPAddress subnet(255, 255, 255, 0);
+  WiFi.config(ip, gateway, subnet);
   Serial.print("Connecting to ");
   Serial.println(ssid);
- 
   WiFi.begin(ssid, password);
  
   while (WiFi.status() != WL_CONNECTED) {
@@ -123,12 +127,12 @@ void loop() {
   int index = 0;
   while(index < N_CRIDES && nomFuncio != entrades[index].nom){
     index++;
-  }
-  String prova = entrades[index].funcio(parametres);
+  } 
   
-  
-  Serial.println(prova);
+  client.println("HTTP/1.1 200 OK\r\n\r\n"+entrades[index].funcio(parametres));
+  //client.write(prova);
   client.flush();
+  client.stop();
 }
 
 String encendre(parametre params[]){
@@ -142,3 +146,7 @@ String encendre(parametre params[]){
   }
   return "TOT PERFECT";
 }
+
+
+
+
